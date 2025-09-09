@@ -36,11 +36,7 @@ export default function FanArtGuidelines() {
 				</GuidelineItem>
 
 				<GuidelineItem>
-					ただし他のユキちゃんとの区別として髪の色を水色にするか、胸元に時計を持たせてください。
-				</GuidelineItem>
-
-				<GuidelineItem>
-					またR18指定が必要なものについては、NSFW表示など未成年の視聴者への配慮を各々でお願いいたします。
+					ただし18指定が必要なものについては、NSFW表示など未成年の視聴者への配慮を各々でお願いいたします。
 				</GuidelineItem>
 
 				<GuidelineItem>

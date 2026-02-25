@@ -58,8 +58,7 @@ function LinkGroup({
 	return (
 		<div
 			className={clsx("w-full md:w-auto flex flex-row", className)}
-			aria-label={ariaLabel}
-			role={ariaLabel ? "group" : undefined}
+			{...(ariaLabel && { "aria-label": ariaLabel, role: "group" })}
 		>
 			{children}
 		</div>

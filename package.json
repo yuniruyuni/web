@@ -6,19 +6,15 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.4.4",
-		"@hono/vite-build": "^1.8.0",
+		"@hono/vite-build": "^1.9.3",
 		"@hono/vite-dev-server": "^0.23.0",
-		"@hono/vite-ssg": "^0.3.0",
-		"@tailwindcss/cli": "^4.1.7",
-		"@tailwindcss/vite": "^4.1.18",
+		"@hono/vite-ssg": "^0.3.3",
+		"@tailwindcss/vite": "^4.2.1",
 		"@types/bun": "latest",
-		"@types/react": "^18.3.12",
-		"@types/react-dom": "^18.3.1",
 		"clsx": "^2.1.1",
-		"npm-run-all2": "^6.2.6",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
-		"tailwindcss": "^4.1.7"
+		"tailwindcss": "^4.2.1"
 	},
 	"scripts": {
 		"dev": "vite",
@@ -30,8 +26,8 @@
 		"type": "tsc --noEmit"
 	},
 	"dependencies": {
-		"hono": "^4.11.1",
-		"honox": "^0.1.52",
-		"vite": "^7.3.0"
+		"hono": "^4.12.2",
+		"honox": "^0.1.54",
+		"vite": "^7.3.1"
 	}
 }

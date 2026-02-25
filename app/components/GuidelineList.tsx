@@ -1,7 +1,7 @@
-import type { ReactNode } from "react";
+import type { Child } from "hono/jsx";
 
 interface GuidelineListProps {
-	children: ReactNode;
+	children: Child;
 }
 
 export default function GuidelineList({ children }: GuidelineListProps) {

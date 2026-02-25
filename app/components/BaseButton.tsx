@@ -1,9 +1,9 @@
 import clsx from "clsx";
-import type { ReactNode } from "react";
+import type { Child } from "hono/jsx";
 
 interface BaseButtonProps {
 	href: string;
-	children: ReactNode;
+	children: Child;
 	variant?: "primary" | "purple" | "pink" | "pink-light" | "slate" | "green";
 	rounded?: "full" | "l" | "r" | "none";
 	className?: string | undefined;

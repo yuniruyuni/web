@@ -1,9 +1,9 @@
 import clsx from "clsx";
-import type { ReactNode } from "react";
+import type { Child } from "hono/jsx";
 import BaseButton from "./BaseButton";
 
 interface LinkGroupProps {
-	children: ReactNode;
+	children: Child;
 	className?: string;
 	"aria-label"?: string;
 }

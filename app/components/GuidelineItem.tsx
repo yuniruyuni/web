@@ -1,8 +1,8 @@
 import clsx from "clsx";
-import type { ReactNode } from "react";
+import type { Child } from "hono/jsx";
 
 interface GuidelineItemProps {
-	children: ReactNode;
+	children: Child;
 	bold?: boolean;
 	className?: string;
 }

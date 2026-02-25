@@ -1,9 +1,9 @@
-import type { ReactNode } from "react";
+import type { Child } from "hono/jsx";
 import BaseButton from "./BaseButton";
 
 interface LinkButtonProps {
 	href: string;
-	children: ReactNode;
+	children: Child;
 	variant?: "primary" | "purple" | "pink" | "pink-light" | "slate" | "green";
 	className?: string;
 }

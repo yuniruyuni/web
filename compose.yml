@@ -1,0 +1,19 @@
+services:
+  dev:
+    build:
+      context: .
+      target: dev
+    ports:
+      - "5173:5173"
+    develop:
+      watch:
+        - action: sync
+          path: ./app
+          target: /work/app
+        - action: sync
+          path: ./public
+          target: /work/public
+        - action: rebuild
+          path: package.json
+        - action: rebuild
+          path: bun.lock

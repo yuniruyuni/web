@@ -43,6 +43,10 @@ export default jsxRenderer(({ children }) => {
 			<head>
 				<meta charset="UTF-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+				<meta
+					name="description"
+					content="Virtual TechLead ゆにるユニのウェブサイトです。簡単なプロフィールや、各種配信サイトへのリンク、配信で使うお洋服リストなどのコンテンツを配信しています。"
+				/>
 				<meta property="og:url" content="https://yuniruyuni.net/" />
 				<meta property="og:type" content="website" />
 				<meta property="og:title" content="yuniruyuni.net" />

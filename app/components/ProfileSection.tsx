@@ -24,9 +24,10 @@ export default function ProfileSection() {
 			<div className="flex flex-col md:flex-row items-center justify-between">
 				<div className="md:w-1/2 mb-8 md:mb-0">
 					<img
-						src="stand.webp"
+						src="/stand.webp"
 						alt="ゆにるユニの立ち絵イラスト - 水色の髪とカジュアルな服装での立ちポーズ"
 						className="rounded-lg mx-auto"
+						loading="lazy"
 					/>
 				</div>
 				<div className="md:w-1/2 text-center md:text-left">

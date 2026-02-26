@@ -1,9 +1,6 @@
 {
 	"name": "yuniruyuni.net",
 	"type": "module",
-	"peerDependencies": {
-		"typescript": "^5.8.3"
-	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.4.4",
 		"@hono/vite-build": "^1.9.3",
@@ -14,16 +11,21 @@
 		"clsx": "^2.1.1",
 		"react": "19",
 		"react-dom": "19",
-		"tailwindcss": "^4.2.1"
+		"sharp": "^0.34.5",
+		"tailwindcss": "^4.2.1",
+		"typescript": "^5.8.3"
 	},
 	"scripts": {
 		"dev": "vite",
+		"prebuild": "bun run scripts/convert-images.ts",
 		"build": "vite build --mode client && vite build",
 		"preview": "vite preview",
 		"lint": "biome check",
 		"lint:fix": "biome check --write",
 		"format": "biome format --write",
-		"type": "tsc --noEmit"
+		"type": "tsc --noEmit",
+		"validate": "bun run type && bun run lint",
+		"clean": "rm -rf dist"
 	},
 	"dependencies": {
 		"hono": "^4.12.2",

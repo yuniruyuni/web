@@ -1,0 +1,65 @@
+name: Deploy to Cloud Run
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  id-token: write
+  packages: write
+
+env:
+  GCP_REGION: us-west1
+  SERVICE_NAME: web
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker ${{ env.GCP_REGION }}-docker.pkg.dev --quiet
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build container image
+        run: docker build -t ${{ env.SERVICE_NAME }}:${{ github.sha }} --target prod .
+
+      - name: Push to Artifact Registry (for Cloud Run)
+        run: |
+          IMAGE_TAG="${{ env.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/apps/${{ env.SERVICE_NAME }}:${{ github.sha }}"
+          docker tag ${{ env.SERVICE_NAME }}:${{ github.sha }} $IMAGE_TAG
+          docker push $IMAGE_TAG
+
+      - name: Push to GHCR (archive)
+        run: |
+          GHCR_TAG="ghcr.io/${{ github.repository_owner }}/${{ env.SERVICE_NAME }}:${{ github.sha }}"
+          docker tag ${{ env.SERVICE_NAME }}:${{ github.sha }} $GHCR_TAG
+          docker push $GHCR_TAG
+
+      - name: Update cloudrun.yaml with image
+        run: |
+          IMAGE_TAG="${{ env.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/apps/${{ env.SERVICE_NAME }}:${{ github.sha }}"
+          sed -i "s|IMAGE_PLACEHOLDER|$IMAGE_TAG|g" cloudrun.yaml
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run services replace cloudrun.yaml \
+            --region ${{ env.GCP_REGION }} \
+            --project ${{ secrets.GCP_PROJECT_ID }}

@@ -5,8 +5,12 @@ import Home from "./Home";
 describe("Home", () => {
   test("hero タイトルとセクション見出しが表示される", () => {
     render(<Home />);
-    expect(screen.getByRole("heading", { name: "yuniruyuni.net" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "ゆにるユニ" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "yuniruyuni.net" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "ゆにるユニ" }),
+    ).toBeInTheDocument();
     expect(
       screen.getByRole("heading", { name: "🌟これまでに配信で作ったもの🌟" }),
     ).toBeInTheDocument();

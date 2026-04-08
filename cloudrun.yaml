@@ -16,8 +16,9 @@ spec:
       containers:
         - image: IMAGE_PLACEHOLDER
           ports:
-            - containerPort: 80
+            - containerPort: 3000
           resources:
             limits:
               cpu: "1"
               memory: "256Mi"
+          # NOTE: PORT env var は Cloud Run が containerPort から自動注入するため設定禁止 (予約環境変数)

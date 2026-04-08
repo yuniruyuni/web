@@ -1,35 +1,22 @@
 {
-	"name": "yuniruyuni.net",
-	"type": "module",
-	"devDependencies": {
-		"@biomejs/biome": "^2.4.4",
-		"@hono/vite-build": "^1.9.3",
-		"@hono/vite-dev-server": "^0.23.0",
-		"@hono/vite-ssg": "^0.3.3",
-		"@tailwindcss/vite": "^4.2.1",
-		"@types/bun": "latest",
-		"clsx": "^2.1.1",
-		"react": "19",
-		"react-dom": "19",
-		"sharp": "^0.34.5",
-		"tailwindcss": "^4.2.1",
-		"typescript": "^5.8.3"
-	},
-	"scripts": {
-		"dev": "vite",
-		"prebuild": "bun run scripts/convert-images.ts",
-		"build": "vite build --mode client && vite build",
-		"preview": "vite preview",
-		"lint": "biome check",
-		"lint:fix": "biome check --write",
-		"format": "biome format --write",
-		"type": "tsc --noEmit",
-		"validate": "bun run type && bun run lint",
-		"clean": "rm -rf dist"
-	},
-	"dependencies": {
-		"hono": "^4.12.2",
-		"honox": "^0.1.54",
-		"vite": "^7.3.1"
-	}
+  "name": "web",
+  "private": true,
+  "workspaces": ["client", "server", "e2e"],
+  "scripts": {
+    "build": "bun run --filter '*' build",
+    "check": "bun run --parallel 'check:*'",
+    "check:lint": "bun run --filter '*' check:lint",
+    "check:test": "bun run --filter '*' check:test",
+    "check:type": "bun run --filter '*' check:type",
+    "check:e2e": "bun run --filter '@web/e2e' check:e2e",
+    "fix:lint": "bun run --filter '*' fix:lint",
+    "watch": "bun run --parallel 'watch:*'",
+    "watch:run": "bun run --filter '*' --parallel watch:run",
+    "watch:test": "bun run --filter '*' --parallel watch:test",
+    "watch:type": "bun run --filter '*' --parallel watch:type"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.9"
+  },
+  "trustedDependencies": ["@biomejs/biome"]
 }

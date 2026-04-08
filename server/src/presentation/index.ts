@@ -37,10 +37,9 @@ export function createApp() {
     }
   });
 
-  // 静的ファイル (SSG 生成された /:id/index.html も含む)
+  // 静的ファイル配信。web は単一ページ (`/`) のみなので SPA fallback は行わず、
+  // 存在しないパスは serveStatic が 404 を返すのに任せる。
   app.use("/*", serveStatic({ root: STATIC_DIR }));
-  // SPA fallback (静的ファイルが無かったときのみ root の index.html を返す)
-  app.get("*", serveStatic({ root: STATIC_DIR, path: "index.html" }));
 
   return app;
 }

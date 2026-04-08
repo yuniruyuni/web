@@ -1,0 +1,19 @@
+{
+  "name": "@web/e2e",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check:e2e": "playwright test --update-snapshots",
+    "check:e2e:ui": "playwright test --ui --update-snapshots",
+    "check:e2e:headed": "playwright test --headed --update-snapshots",
+    "check:lint": "biome check .",
+    "check:type": "tsc --noEmit",
+    "fix:lint": "biome check --write ."
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^25.5.2",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,13 +1,14 @@
 {
   "name": "web",
   "private": true,
-  "workspaces": ["client", "server"],
+  "workspaces": ["client", "server", "e2e"],
   "scripts": {
     "build": "bun run --filter '*' build",
     "check": "bun run --parallel 'check:*'",
     "check:lint": "bun run --filter '*' check:lint",
     "check:test": "bun run --filter '*' check:test",
     "check:type": "bun run --filter '*' check:type",
+    "check:e2e": "bun run --filter '@web/e2e' check:e2e",
     "fix:lint": "bun run --filter '*' fix:lint",
     "watch": "bun run --parallel 'watch:*'",
     "watch:run": "bun run --filter '*' --parallel watch:run",

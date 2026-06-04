@@ -18,5 +18,8 @@
   "devDependencies": {
     "@biomejs/biome": "2.4.16"
   },
-  "trustedDependencies": ["@biomejs/biome"]
+  "trustedDependencies": ["@biomejs/biome"],
+  "overrides": {
+    "ws": "^8.21.0"
+  }
 }

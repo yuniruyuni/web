@@ -24,4 +24,12 @@ describe("Home", () => {
     const content = container.querySelector("#content");
     expect(content).not.toBeNull();
   });
+
+  test("Fighter Notes へのリンクが表示される", () => {
+    render(<Home />);
+    expect(screen.getByRole("link", { name: /Fighter Notes/ })).toHaveAttribute(
+      "href",
+      "https://fighter.yuniruyuni.net/",
+    );
+  });
 });

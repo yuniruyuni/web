@@ -9,6 +9,12 @@ export default function StreamingProducts() {
         "Twitchストリーマー向けの配信設定管理ツール。配信テンプレートの作成・保存、タイトル・カテゴリ・タグの一括設定、ワンクリックでの配信設定の適用など、配信準備を効率化する機能を提供します。",
       url: "https://tags.yuniruyuni.net/",
     },
+    {
+      title: "Fighter Notes",
+      description:
+        "Street Fighter 6プレイヤー向けのリプレイ振り返りツール。録画したリプレイ動画をブラウザ内で解析し、被弾した場面や対空・DIなどの傾向を、改善ポイントや練習メニューとともに確認できます。",
+      url: "https://fighter.yuniruyuni.net/",
+    },
   ];
 
   return (

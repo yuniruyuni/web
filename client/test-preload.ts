@@ -8,8 +8,12 @@ import { GlobalRegistrator } from "@happy-dom/global-registrator";
 GlobalRegistrator.register();
 
 import { expect } from "bun:test";
-import * as matchers from "@testing-library/jest-dom/matchers";
 import { disableRealRequests } from "bun-bagel";
+
+const matchers = (await import("@testing-library/jest-dom/matchers")) as Omit<
+  typeof import("@testing-library/jest-dom/matchers"),
+  "default"
+>;
 
 disableRealRequests();
 expect.extend(matchers);

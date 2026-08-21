@@ -23,8 +23,12 @@ permissions: {}
 jobs:
   build:
     uses: ./.github/workflows/build-image.yml
+    # build-image.yml が宣言している権限を渡す。再利用ワークフローは呼び出し側より
+    # 多い権限を持てないので、足りないとワークフロー自体が読み込みを拒否され
+    # startup_failure になる。
     permissions:
       contents: read
+      id-token: write
       packages: write
     with:
       dockerfile: Dockerfile

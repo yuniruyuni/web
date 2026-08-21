@@ -4,7 +4,7 @@
 // DB 名やロール名は yunirun が導出するので現れない。
 {
   "app": {
-    // yuniruyuni.net 側のアプリ名は web2 (旧 apps.nix 側と並行して動かすため) 
+    // yuniruyuni.net 側のアプリ名は web2 (旧 apps.nix 側と並行して動かすため)
     // だが、push している image は web。移行が済んだら名前が揃う。
     "image": "web"
   }

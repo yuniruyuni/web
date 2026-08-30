@@ -25,6 +25,17 @@ describe("Home", () => {
     expect(content).not.toBeNull();
   });
 
+  test("配信で作ったものの各カードに画像が表示される", () => {
+    render(<Home />);
+    const images = screen
+      .getAllByRole("img")
+      .filter((img) => img.getAttribute("src")?.startsWith("/product-"));
+    expect(images).toHaveLength(10);
+    for (const img of images) {
+      expect(img).toHaveAccessibleName();
+    }
+  });
+
   test("Fighter Notes へのリンクが表示される", () => {
     render(<Home />);
     expect(screen.getByRole("link", { name: /Fighter Notes/ })).toHaveAttribute(

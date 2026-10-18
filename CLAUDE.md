@@ -113,9 +113,10 @@ white / slate を起点に、`sky` を主軸として色相順 (sky → blue →
 
 ## CI (.github/workflows/)
 
-- `ci.yml`: type / lint / test / build → e2e → security (bun audit) → docker build + healthcheck
-- `build-image.yml`: 再利用 workflow (Artifact Registry + GHCR への push)
-- `deploy.yml`: build-app → `gcloud run services replace cloudrun.yaml`
+- `ci.yml`: type / lint / test / build → e2e → security (bun audit) → docker build + healthcheck → (main への push のみ) deploy
+- `deploy-yunirun.yml`: 再利用 workflow + 手動実行。build-image → opkssh で VPS へ `yunirun deploy`。単独では push で起動しない (CI が赤い commit を出さないため)
+- `build-image.yml`: 再利用 workflow (GHCR への push)
+- `security.yml`: 週次 (+ 手動) の `bun audit`。デプロイはしない
 
 ## Cloud Run デプロイの注意点
 

@@ -1,22 +1,24 @@
-# yunirun 経由での VPS デプロイ (検証中)
+# yunirun 経由での VPS デプロイ。
 #
-# 既存の deploy-vps.yml と並行して動く。yuniruyuni.net 側のアプリ名が web2 な
-# ので、コンテナも HAProxy の経路も既存とは別に立つ。検証が済んだら
-# deploy-vps.yml を置き換える。
+# push では起動しない。ci.yml が test / e2e / security / docker の成功後に
+# workflow_call で呼ぶ。以前は push で独立に走っていたため、CI が赤い
+# commit (security の失敗) でもデプロイされていた。workflow_dispatch は
+# 手動の再デプロイ用に残す。
 #
-# 既存版との違いは、VPS 側の受け口が app-deploy ではなく yunirun deploy で、
-# yunirun.jsonc をデプロイ時に一緒に運ぶこと。VPS が GitHub を取りに行かない
-# ので、private リポジトリでも認証情報を置かずに済む。
+# 認証は GitHub Actions の OIDC トークンから opkssh が発行する短命の SSH
+# 証明書。VPS 側 (yuniruyuni.net の nixos/services/yunirun.nix) は sub を
+#   repo:yuniruyuni@85034901/web@830180787:ref:refs/heads/main
+# と完全一致で照合する。sub はワークフローのファイル名や呼び出し元を含まず、
+# 呼び出された場合も呼び出し元の ref で決まるので、ci.yml から呼んでも変わらない。
+# deploy job に environment: を付けてはいけない (sub が :environment:<name> になる)。
+#
+# VPS 側の受け口は yunirun deploy で、yunirun.jsonc をデプロイ時に一緒に運ぶ。
+# VPS が GitHub を取りに行かないので、認証情報を置かずに済む。
 name: Deploy via yunirun
 
 on:
-  push:
-    branches: [main]
+  workflow_call:
   workflow_dispatch:
-
-concurrency:
-  group: deploy-yunirun-${{ github.ref }}
-  cancel-in-progress: false
 
 permissions: {}
 
@@ -28,7 +30,6 @@ jobs:
     # startup_failure になる。
     permissions:
       contents: read
-      id-token: write
       packages: write
     with:
       dockerfile: Dockerfile
@@ -38,12 +39,18 @@ jobs:
   deploy:
     needs: [build]
     runs-on: ubuntu-latest
+    # デプロイの中断は blue/green の入れ替えを中途半端な状態で止めうるので
+    # 途中キャンセルはしない。
+    concurrency:
+      group: deploy-yunirun
+      cancel-in-progress: false
     permissions:
       # opkssh が OIDC トークンを取得するのに必須
       id-token: write
       contents: read
-      # GHCR への push と、VPS へ渡す pull 用トークンに使う
-      packages: write
+      # VPS が GHCR から pull するためのトークンを渡すのに使う。push は build
+      # job だけが行うので、VPS に渡るトークンには write を持たせない。
+      packages: read
 
     steps:
       - name: Checkout
@@ -86,6 +93,7 @@ jobs:
 
       - name: Deploy
         env:
+          # job の終了とともに失効するので VPS には長期の資格情報を残さない。
           GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SHA: ${{ github.sha }}
         run: |

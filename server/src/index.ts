@@ -1,3 +1,4 @@
+import "./infra/http/install-fetch-guard";
 import { createLogger } from "./infra/logger";
 import { createApp } from "./presentation";
 

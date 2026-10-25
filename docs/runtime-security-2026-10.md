@@ -85,3 +85,12 @@ updating other locked dependencies. This fixes the static path middleware
 bypass independently of the Bun response-decompression mitigation.
 
 Source: https://github.com/advisories/GHSA-5r4p-p66f-jhc7
+
+## Additional audit corrections — 2026-10-25
+
+Happy DOM and its global registrator are pinned to 21.0.4 for GHSA-834v-8h66-3h79. These are test/development dependencies.
+
+Only these package records and their direct manifest pins change in bun.lock.
+Other resolved dependencies, application source, schemas and the fetch guard are unchanged.
+
+- https://github.com/capricorn86/happy-dom/releases/tag/v21.0.4

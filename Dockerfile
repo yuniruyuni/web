@@ -1,4 +1,4 @@
-FROM oven/bun:1.4.3@sha256:ec06c3b6cea04192ae6770c434f668ca41d343ad19fa6472216c7b48be39c598 AS build-client
+FROM oven/bun:1.4.4@sha256:1d22548f177f4ff38e0c15baa3c2c46c6c2060ba2d1bc573bb4720b407548f1d AS build-client
 WORKDIR /work
 COPY package.json bun.lock /work/
 COPY client/package.json /work/client/
@@ -12,7 +12,7 @@ COPY assets/ /work/assets/
 WORKDIR /work/client
 RUN bun run build
 
-FROM oven/bun:1.4.3@sha256:ec06c3b6cea04192ae6770c434f668ca41d343ad19fa6472216c7b48be39c598 AS build-server
+FROM oven/bun:1.4.4@sha256:1d22548f177f4ff38e0c15baa3c2c46c6c2060ba2d1bc573bb4720b407548f1d AS build-server
 WORKDIR /work
 COPY package.json bun.lock /work/
 COPY client/package.json /work/client/
@@ -22,6 +22,9 @@ RUN bun install --frozen-lockfile
 COPY server/ /work/server/
 WORKDIR /work/server
 RUN bun build src/index.ts --compile --outfile /work/dist/server
+# Prove the embedded runtime matches the pinned compiler and retains the guard.
+RUN /work/dist/server --runtime-info > /tmp/runtime-info.json \
+ && bun -e 'const r = await Bun.file("/tmp/runtime-info.json").json(); if (r.bun !== Bun.version || r.bunRevision !== Bun.revision || r.outboundFetchDecompression !== false) throw new Error("Compiled runtime/guard mismatch"); console.log(JSON.stringify(r));'
 
 FROM gcr.io/distroless/cc-debian12
 WORKDIR /app

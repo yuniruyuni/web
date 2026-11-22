@@ -25,6 +25,23 @@ export function createApp() {
     }),
   );
 
+  app.post("/api/usage/visit", async (c) => {
+    c.header("Cache-Control", "no-store");
+    const id = c.req.header("X-Yuniview-Visit") ?? "";
+    if (!/^[a-f0-9-]{36}$/.test(id)) return c.body(null, 400);
+    try {
+      const response = await fetch("http://localhost/visit", {
+        unix: "/run/yuniview-otlp/usage.sock",
+        method: "POST",
+        body: id,
+        signal: AbortSignal.timeout(1500),
+      });
+      return c.body(null, response.status === 204 ? 204 : 503);
+    } catch {
+      return c.body(null, 503);
+    }
+  });
+
   app.get("/health", (c) => c.json({ status: "ok" }));
 
   app.use("/*", async (c, next) => {

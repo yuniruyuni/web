@@ -1,3 +1,4 @@
+import { trackDailyUse } from "./daily-usage";
 import "./index.css";
 import "./i18n/config";
 import { StrictMode } from "react";
@@ -12,3 +13,5 @@ if (root) {
     </StrictMode>,
   );
 }
+
+trackDailyUse();

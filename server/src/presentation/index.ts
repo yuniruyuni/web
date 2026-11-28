@@ -2,11 +2,15 @@ import { Hono } from "hono";
 import { serveStatic } from "hono/bun";
 import { compress } from "hono/compress";
 import { secureHeaders } from "hono/secure-headers";
+import { requestSpan } from "./middleware/request-span";
 
 const STATIC_DIR = process.env.STATIC_DIR ?? "./static";
 
 export function createApp() {
   const app = new Hono();
+
+  // 何よりも先に。後段が何を返しても (静的ファイルでも 404 でも) 要求として数えられる。
+  app.use(requestSpan());
 
   app.use(compress());
 

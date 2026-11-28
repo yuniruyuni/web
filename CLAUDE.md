@@ -9,6 +9,7 @@ yuniruyuni.net — Virtual TechLead ゆにるユニのウェブサイト (静的
 - **Runtime/Package Manager:** Bun (workspaces: client, server, e2e)
 - **Frontend:** React 19 + TypeScript + Tailwind CSS v4
 - **Backend:** Hono — **静的配信のみ** (compress + secureHeaders + `/health` + serveStatic)。tRPC / DB / API なし
+- **Tracing:** OpenTelemetry → OTLP/gRPC (本番は yunirun が `OTEL_EXPORTER_OTLP_*` / `OTEL_SERVICE_NAME` を注入し、yuniview agent の unix socket へ送る)
 - **画像処理:** `client/bin/image.ts` (sharp で PNG → WebP 変換)
 - **Linting/Formatting:** Biome (`biome.jsonc`)
 - **Testing:** bun:test (unit), Playwright (e2e)
@@ -59,12 +60,16 @@ bun run fix:lint      # Biome auto-fix (全ワークスペース)
 ├── server/                   # @web/server (静的配信専用)
 │   ├── package.json
 │   ├── tsconfig.json
+│   ├── build.ts               # 単一実行ファイル化 (@grpc/grpc-js の実行時 require を静的 import に置換)
 │   └── src/
-│       ├── index.ts           # Bun.serve エントリ
+│       ├── index.ts           # Bun.serve エントリ (startTracing を最初に呼ぶ)
 │       ├── infra/
-│       │   └── logger.ts      # console ロガー
+│       │   ├── logger.ts      # console ロガー
+│       │   └── tracing/       # OpenTelemetry (OTEL_EXPORTER_OTLP_ENDPOINT が無ければ何もしない)
 │       └── presentation/
-│           └── index.ts       # createApp: compress + secureHeaders + /health + serveStatic
+│           ├── index.ts       # createApp: requestSpan + compress + secureHeaders + /health + serveStatic
+│           └── middleware/
+│               └── request-span.ts # 要求ごとの SERVER スパン (yuniview が要求として数える)
 │
 └── e2e/                      # @web/e2e
     ├── package.json

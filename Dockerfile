@@ -21,7 +21,7 @@ COPY e2e/package.json /work/e2e/
 RUN bun install --frozen-lockfile
 COPY server/ /work/server/
 WORKDIR /work/server
-RUN bun build src/index.ts --compile --outfile /work/dist/server
+RUN bun run build.ts /work/dist/server
 # Prove the embedded runtime matches the pinned compiler and retains the guard.
 RUN /work/dist/server --runtime-info > /tmp/runtime-info.json \
  && bun -e 'const r = await Bun.file("/tmp/runtime-info.json").json(); if (r.bun !== Bun.version || r.bunRevision !== Bun.revision || r.outboundFetchDecompression !== false) throw new Error("Compiled runtime/guard mismatch"); console.log(JSON.stringify(r));'

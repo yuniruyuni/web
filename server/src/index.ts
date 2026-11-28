@@ -1,6 +1,10 @@
 import "./infra/http/install-fetch-guard";
 import { createLogger } from "./infra/logger";
+import { startTracing, stopTracing } from "./infra/tracing/start";
 import { createApp } from "./presentation";
+
+// 何よりも先に始める。後から呼ぶと、それまでのスパンが送られない。
+startTracing();
 
 const logger = createLogger();
 
@@ -8,6 +12,9 @@ const PORT = Number(process.env.PORT ?? 3000);
 const app = createApp();
 
 async function shutdown() {
+  // 溜まっているぶんを送り切る。これが無いと落ちる直前の — いちばん見たい —
+  // スパンが失われる。
+  await stopTracing();
   process.exit(0);
 }
 
